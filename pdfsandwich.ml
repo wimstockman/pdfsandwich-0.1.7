@@ -18,7 +18,7 @@ let global_temp_dir = Filename.temp_file "pdfsandwich_tmp" "";;
 (*default binary names:*)
 let unpaper = ref "unpaper";;
 let identify = ref "identify";;
-let convert = ref "convert";;
+let convert = ref "magick";;
 let tesseract = ref "tesseract";;	(* this will be preceded by the OMP_THREAD_LIMIT (see options) *)
 let pdfinfo = ref "pdfinfo";;
 let pdfunite = ref "pdfunite";;
