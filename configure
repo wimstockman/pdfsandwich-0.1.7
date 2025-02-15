@@ -1,0 +1,52 @@
+#! /bin/sh
+
+# currently only used to automatically set a new prefix p by
+# ./configure --prefix=p
+# the compiled files will be installed to p/bin, p/lib, etc.
+# default: p=/usr/local
+
+prefix=/usr/local
+
+for option
+do
+  optarg=`expr "x$option" : 'x[^=]*=\(.*\)'`
+  case $option in
+    -help | --help | --hel | --he | -h)
+    { echo "USAGE: configure [--prefix=dir]
+where dir is the installation prefix directory (default: /usr/local)" >&2
+   { (exit 1); exit 1; }; }
+   ;;
+    --prefix=*)
+      prefix=$optarg ;;
+    -*) { echo "warning: unrecognized option: $option
+Try \`$0 --help' for more information." >&2 
+   }
+   ;;
+  esac
+done
+
+
+OCAMLCLOC=`ocamlc -where || echo +`
+OCAMLOPTLOC=`ocamlopt -where || echo +`
+echo
+if test -d $OCAMLCLOC
+then
+  echo ocamlc found in $OCAMLCLOC
+else
+  echo ocmalc not found, configuration failed.
+  exit 0
+fi
+if test -x $OCAMLOPTLOC
+then
+  echo ocamlopt found in $OCAMLOPTLOC
+else
+  echo ocamlopt not found, configuration failed.
+  exit 0
+fi
+
+echo
+echo PREFIX=$prefix
+echo PREFIX=$prefix > makefile.installprefix
+echo makefile.installprefix written.
+echo
+

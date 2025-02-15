@@ -1,0 +1,32 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+EAPI="2"
+
+inherit eutils
+
+DESCRIPTION="generator of sandwich OCR pdf files"
+HOMEPAGE="http://www.tobias-elze.de/pdfsandwich"
+SRC_URI="mirror://sourceforge/pdfsandwich/${P}.tar.bz2"
+
+LICENSE="GPL-2"
+KEYWORDS="~amd64 ~x86"
+SLOT="0"
+IUSE=""
+
+RDEPEND=">=app-text/tesseract-3.00
+	app-text/unpaper
+	media-gfx/exact-image
+	app-text/ghostscript-gpl"
+
+DEPEND="sys-apps/gawk
+	>=dev-lang/ocaml-3.08[ocamlopt]"
+
+src_prepare() {
+        sed -i "/^OCAMLOPTFLAGS/s/$/ -ccopt \"\$(CFLAGS) \$(LDFLAGS)\"/" Makefile || die
+}
+
+src_install() {
+	emake DESTDIR="${D}" install || die "install failed"
+}
